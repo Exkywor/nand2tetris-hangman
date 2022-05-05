@@ -1,0 +1,24 @@
+class MiscTests {
+    function void Random() {
+        do Random.seed(2);
+        do Output.printInt(Random.next());
+        do OutputExt.printString(" ");
+        do Output.printInt(Random.next());
+        do OutputExt.printString(" ");
+        do Output.printInt(Random.next());
+        do Output.println();
+        do Output.printInt(Random.between(-1,1));
+        do OutputExt.printString(" ");
+        do Output.printInt(Random.between(-1,1));
+        do OutputExt.printString(" ");
+        do Output.printInt(Random.between(-1,1));
+        do OutputExt.printString(" ");
+        do Output.printInt(Random.between(-1,1));
+        do OutputExt.printString(" ");
+        do Output.printInt(Random.between(-1,1));
+        do OutputExt.printString(" ");
+        do Output.printInt(Random.between(-1,1));
+        do Output.println();
+        return;
+    }
+}

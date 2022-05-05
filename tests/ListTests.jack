@@ -1,0 +1,52 @@
+class ListTests {
+    function void Remove() {
+        var List testList;
+        let testList = List.new(5, null);
+        let testList = List.new(10, testList);
+        let testList = List.new(3, testList);
+        let testList = List.new(5, testList);
+        let testList = List.new(7, testList);
+        let testList = List.new(0, testList);
+
+        do testList.print();
+        do Output.println();
+        do Output.printInt(testList.getSize());
+        do Output.println();
+        do testList.remove(5);
+        do testList.print();
+        do Output.println();
+        do Output.printInt(testList.getSize());
+        do Output.println();
+        do testList.remove(3);
+        do testList.print();
+        do Output.println();
+        do Output.printInt(testList.getSize());
+        do Output.println();
+        do testList.remove(5);
+        do testList.print();
+        do Output.println();
+        do Output.printInt(testList.getSize());
+        do Output.println();
+        do testList.remove(20);
+        do testList.print();
+        do Output.println();
+        do Output.printInt(testList.getSize());
+        do Output.println();
+        do testList.remove(0);
+        do testList.print();
+        do Output.println();
+        do Output.printInt(testList.getSize());
+        do Output.println();
+        do testList.remove(7);
+        do testList.print();
+        do Output.println();
+        do Output.printInt(testList.getSize());
+        do Output.println();
+        do testList.remove(10);
+        do testList.print();
+        do Output.println();
+        do Output.printInt(testList.getSize());
+        do Output.println();
+        return;
+    }
+}

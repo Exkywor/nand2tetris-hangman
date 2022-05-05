@@ -1,0 +1,138 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/09/List/List.jack
+
+/** Represents a linked list of integers. */
+class List {
+    field int data;          // a list consists of a data field,
+    field List next;         // followed by a list
+
+    /* Creates a List. */
+    constructor List new(int car, List cdr) {
+        let data = car;       // the identifiers car and cdr are used in 
+        let next = cdr;       // memory of the Lisp programming language
+        return this;
+    }
+
+    /** Accessors. */
+    method int getData() { return data; }
+    method int getNext() { return next; }
+
+    /** Setters */
+    method void setData(int d) {
+        let data = d;
+        return;
+    }
+    method void setNext(List n) {
+        let next = n;
+        return;
+    }
+
+    /** Prints this list. */
+    method void print() {
+        var List current;    // initializes current to the first item
+        let current = this;  // of this list
+        while (~(current = null)) {
+            do Output.printInt(current.getData());
+            do Output.printChar(32); // prints a space
+            let current = current.getNext();
+        }
+        return;
+    }
+
+    /** Prints this list as string. */
+    method void printAsString() {
+        var List current;
+        let current = this;
+        while (~(current = null)) {
+            do Output.printString(current.getData());
+            do Output.printChar(32);
+            let current = current.getNext();
+        }
+        return;
+    }
+
+    /**
+    PUBLIC:
+    * Gets the size of the list. It's computed on every call to avoid dealing with desyncing.
+    * RETURNS: The sie of the list.
+    */
+    method int getSize() {
+        var int size;
+        var List current; let current = this;
+
+        while(~(current = null)) {
+            let size = size + 1;
+            let current = current.getNext();
+        }
+
+        return size;
+    }
+
+    /**
+    PUBLIC:
+    * Removes the first occurrence of a value from the list, if it exists.
+    * WARNING: Does not work on 1-node lists! The data will be disposed, but you'll still have some access to it.
+    * WARNING 2: Will not work in Lists containing strings, as the values would be compared by reference, never removing anything.
+    * PARAMS:
+    * - k: Element to remove.
+    */
+    method void remove(int k) {
+        var List child; var List grandchild;
+        var List current; let current = this;
+
+        while (~(current = null)) {
+            let child = current.getNext();
+
+            // We'll check first if a child exists, so that if it's the target
+            // and the last element we can completely remove it
+            if (~(child = null)) { // Handles lists longer than 1 element
+                if (k = child.getData()) { // Check if the child is the target
+                    let grandchild = child.getNext();
+
+                    if (grandchild = null) { // Child is the last node
+                        do current.setNext(null);
+                        do Memory.deAlloc(child);
+                        return;
+                    } else { // We mimic grandchild into child, and remove grandchild
+                        do child.setData(grandchild.getData());
+                        do child.setNext(grandchild.getNext());
+                        do Memory.deAlloc(grandchild);
+                        return;
+                    }
+                } else {
+                    // Check if current is the target. If we don't check here, we would not check 2-element dictionaries where
+                    // the first element is the target
+                    if (k = current.getData()) {
+                        // We overwrite current with child's values to, effectively, remove this node.
+                        // We also discard child since it anc current are the same now.
+                        do current.setData(child.getData());
+                        do current.setNext(child.getNext());
+                        do Memory.deAlloc(child);
+                        return;
+                    }
+                }
+            } else { // Handles 1-element lists
+                if (k = current.getData()) {
+                    if (child = null) {
+                        do Memory.deAlloc(current); // We simply remove the node
+                        return;
+                    }
+                }
+            }
+            let current = current.getNext();
+        }
+        return;
+    }
+
+    /** Disposes this List by recursively disposing its tail. */
+    method void dispose() {
+        if (~(next = null)) {
+            do next.dispose();
+        }
+        // Uses an OS routine to recycle this object.
+        do Memory.deAlloc(this);
+        return;
+    }
+}

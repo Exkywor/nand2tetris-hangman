@@ -1,0 +1,71 @@
+/**
+* Static class to manage the available word sets and retrieve words from them.
+*/
+class WordManager {
+    static List _selectedSet;
+    static WordManager _wordManager;
+    static Dictionary _wordSets;
+    static List _gameSet;
+    static List _movieSet;
+    static List _animeSet;
+
+    /** PUBLIC: Initializes the WordManager by loading its avaialable sets. */
+    function void Initialize() { do WordManager.LoadSets(); return; }
+
+    /** PRIVATE: Loads the avaialble sets. */
+    function void LoadSets() {
+        let _gameSet =  List.new("mass effect",
+                        List.new("hellblade senuas sacrifice",
+                        List.new("the witcher 3", null)));
+        let _movieSet = List.new("star wars the empire strikes back",
+                        List.new("edge of tomorrow",
+                        List.new("batman the dark knight", null)));
+        let _animeSet = List.new("code geass",
+                        List.new("attack on titan",
+                        List.new("fullmetal alchemist brotherhood", null)));
+        let _wordSets = Dictionary.new("GAMES", _gameSet, null);
+        do _wordSets.add("MOVIES", _movieSet);
+        do _wordSets.add("ANIME", _animeSet);
+        return;
+    }
+
+    /**
+    PUBLIC:
+    * Set the input set as the _selectedSet.
+    * INVARIANT: The input set is an existing set.
+    * PARAMS:
+    * - set: The set to select.
+    */
+    function void SetSet(String set) {
+        do WordManager.LoadSets(); // Ensures the lists are correct
+        let _selectedSet = _wordSets.get(set);
+        return;
+    }
+
+    /**
+    PUBLIC:
+    * Gets the next word from _selectedSet.
+    * RETURNS: The next word from _selectedSet.
+    */
+    function String GetNext() {
+        var String word;
+
+        if (~(_selectedSet = null)) {
+            let word = _selectedSet.getData();
+            let _selectedSet = _selectedSet.getNext();
+        } else {
+            let word = "";
+        }
+
+        return word;
+    }
+
+    /** PUBLIC: Returns the list of available sets. */
+    function List GetSets() { return _wordSets.getKeys(); }
+
+    /** PUBLIC: Returns the selected set */
+    function List GetSelectedSet() { return _selectedSet; }
+
+    /** PUBLIC: Returns true if the selected set is not empty. */
+    function boolean MoreInSet() { return ~(_selectedSet = null); }
+}

@@ -1,0 +1,70 @@
+class DictionaryTests {
+    function void AddRemove() {
+        var Dictionary testDict;
+        var Dictionary dict2;
+        var List keys;
+
+        let testDict = Dictionary.new("a", "Hello", null);
+        do testDict.add("b", "there");
+        do testDict.add("c", "General Kenobi,");
+        do testDict.add("d", "you are a bold one");
+        do testDict.add("e", "Hello world!");
+                
+        do testDict.remove("e");
+        let keys = testDict.getKeys();
+        do keys.printAsString();
+        do Output.println();
+        do Output.printInt(testDict.getCount());
+        do Output.println();
+        do testDict.remove("b");
+        let keys = testDict.getKeys();
+        do keys.printAsString();
+        do Output.println();
+        do Output.printInt(testDict.getCount());
+        do Output.println();
+        do testDict.remove("a");
+        let keys = testDict.getKeys();
+        do keys.printAsString();
+        do Output.println();
+        do Output.printInt(testDict.getCount());
+        do Output.println();
+        do testDict.remove("c");
+        let keys = testDict.getKeys();
+        do keys.printAsString();
+        do Output.println();
+        do Output.printInt(testDict.getCount());
+        do Output.println();
+        do testDict.remove("d");
+        let keys = testDict.getKeys();
+        do keys.printAsString();
+        do Output.println();
+        do Output.printInt(testDict.getCount());
+        do Output.println();
+
+        return;
+    }
+
+    function void ContainsUpdate() {
+        var List keys;
+        let keys = testDict.getKeys();
+        do keys.printAsString();
+
+        do Output.println();
+        do Output.printInt(testDict.containsKey("c"));
+        do Output.println();
+        do Output.printInt(testDict.containsKey("f"));
+        do Output.println();
+
+        do Output.printString(testDict.get("c"));
+        do Output.println();
+        do testDict.update("c", "I have a bad feeling about this...");
+        do Output.printString(testDict.get("c"));
+        do Output.println();
+        do testDict.add("c", "Here we go again");
+        do Output.printString(testDict.get("c"));
+        do Output.println();
+
+        return;
+    }
+
+}

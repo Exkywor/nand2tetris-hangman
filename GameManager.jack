@@ -1,0 +1,155 @@
+/**
+* Static class to manage the hangman game.
+* The objective of the game is to guess a hidden word, from a selected set of words,
+* by guessing one letter, contained in the hidden word, at a time before running out of attempts.
+* The number of attempts is decided based on the length of the hidden word and the selected difficulty.
+*/
+class GameManager {
+    static Game _game;
+
+    static int _score;
+    static int _scoreMultiplier;
+    static int _difficulty; // Controls how many attempts the player has and the score multiplier. */
+    static int _attemptsLeft;
+    static String _set;
+
+    /**
+    PUBLIC:
+    * Runs the game.
+    * PARAMS:
+    * - setGame: True to run the setGame method.
+    * - resetScore: True to reset the game score.
+    */
+    function void RunGame(boolean setGame, boolean resetScore) {
+        var char guess;
+        var boolean guessRes;
+        var boolean sameSet;
+
+        if (setGame) { do GameManager.SetGame(resetScore); }
+
+        while ((_attemptsLeft > 0) & ~(_game.IsGuessed())) {
+            let guess = CLI.PromptForGuess(_game.GetCurrWord());
+
+            if ((guess = 33) | (guess = 35) | (guess = 37)) { // Handle commands
+                if (guess = 33) { // Quit
+                    do CLI.PrintMessage("Game finished.");
+                    return;
+                }
+                if (guess = 37) { // Continue
+                    do Output.println();
+                    let guess = CLI.PromptForGuess(_game.GetCurrWord());
+                }
+                if (guess = 35) { // Restart
+                    do Output.println();
+                    do GameManager.RunGame(true, true);
+                    return;
+                }
+            }
+
+            let guessRes = _game.GuessLetter(guess);
+            do GameManager.UpdateStatus(guessRes);
+            do CLI.PrintStatus(_score, _attemptsLeft,  _set);
+        }
+
+        do GameManager.HandleEnding();
+
+        return;
+    }
+
+    /**
+    PRIVATE:
+    * Handles the end of the game. Prompting for continue playing in the same set if it has more words,
+    * starting over while keeping the score, or ending the game. If the player lost, it displays the losing message.
+    */
+    function void HandleEnding() {
+        if (_attemptsLeft < 1) { do CLI.PrintMessage("YOU LOST!"); return; }
+
+        do CLI.PrintMessage("CONGRATULATIONS, YOU WON!");
+        if (WordManager.MoreInSet()) {
+            if (CLI.ConfirmAction("Do you want to continue playing in the same set (your score will be accumulated)? Y/N: ")) {
+                do CLI.ClearIfFull();
+                do GameManager.SetWord();
+                do Output.println();
+                do GameManager.RunGame(false, false);
+            } else {
+                do CLI.PrintMessage("Game finished.");
+            }
+        } else {
+            if (CLI.ConfirmAction("Set done. Do you want to play with a new set (your score will be accumulated)? Y/N: ")) {
+                do GameManager.RunGame(true, false);
+            }
+        }
+
+        return;
+    }
+
+    /**
+    PRIVATE:
+    * Prepares the game to be run by initializing a new game, setting the score related variables,
+    * and optionally, reset the score.
+    * PARAMS:
+    * - resetScore: Whether to reset the score or not.
+    */
+    function void SetGame(boolean resetScore) {
+        if (resetScore) { let _score = 0; }
+        
+        do WordManager.Initialize();
+        do GameManager.SetSet();
+        do GameManager.SetWord();
+        do GameManager.SetDifficulty();
+
+        do CLI.PrintStatus(_score, _attemptsLeft,  _set);
+        return;
+    }
+
+    /** PRIVATE: Prompts the user for a set and sets it as the target set in the WordManager. */
+    function void SetSet() {
+        let _set = CLI.PromptForSet(WordManager.GetSets());
+        do WordManager.SetSet(_set);
+        return;
+    }
+    
+    /** PRIVATE: Sets the game with the next word from the selected set. */
+    function void SetWord() {
+        var String targetWord;
+        let targetWord = WordManager.GetNext();
+        let _game = Game.new(targetWord);
+
+        do Memory.deAlloc(targetWord);
+        return;
+    }
+    
+    /** PRIVATE: Prompts the user for a difficulty and sets it and its related variables. */
+    function void SetDifficulty() {
+        let _difficulty = CLI.PromptForDifficulty();
+        let _attemptsLeft = (_game.GetMapSize() * 2) - (_difficulty * 3);
+        let _scoreMultiplier = _difficulty;
+        return;
+    }
+
+    /**
+    PRIVATE:
+    * Updates the score and attempts left.
+    * PARAMS:
+    * - guessRes: The guess result. True to update the score, false to decrease the attempts left.
+    */
+    function void UpdateStatus(boolean guessRes) {
+        if (guessRes) {
+            let _score = _score + 100 + (100*_scoreMultiplier);
+        } else {
+            do Output.println();
+            do OutputExt.printString("Wrong guess.");
+            do Output.println();
+            let _attemptsLeft =  _attemptsLeft - 1;
+        }
+
+        return;
+    }
+
+    /** PUBLIC: Disposes of any initialized variables. */
+    function void Dispose() {
+        if (~(_game = null)) { do _game.Dispose(); }
+        if (~(_set = null)) { do Memory.deAlloc(_set); }
+        return;
+    }
+}

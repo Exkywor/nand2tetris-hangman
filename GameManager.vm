@@ -1,0 +1,765 @@
+function GameManager.RunGame 3
+push argument 0
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push argument 1
+call GameManager.SetGame 1
+pop temp 0
+label IF_FALSE0
+label WHILE_EXP0
+push static 4
+push constant 0
+gt
+push static 0
+call Game.IsGuessed 1
+not
+and
+not
+if-goto WHILE_END0
+push static 0
+call Game.GetCurrWord 1
+call CLI.PromptForGuess 1
+pop local 0
+push local 0
+push constant 33
+eq
+push local 0
+push constant 35
+eq
+or
+push local 0
+push constant 37
+eq
+or
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push local 0
+push constant 33
+eq
+if-goto IF_TRUE2
+goto IF_FALSE2
+label IF_TRUE2
+push constant 14
+call String.new 1
+push constant 71
+call String.appendChar 2
+push constant 97
+call String.appendChar 2
+push constant 109
+call String.appendChar 2
+push constant 101
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 102
+call String.appendChar 2
+push constant 105
+call String.appendChar 2
+push constant 110
+call String.appendChar 2
+push constant 105
+call String.appendChar 2
+push constant 115
+call String.appendChar 2
+push constant 104
+call String.appendChar 2
+push constant 101
+call String.appendChar 2
+push constant 100
+call String.appendChar 2
+push constant 46
+call String.appendChar 2
+call CLI.PrintMessage 1
+pop temp 0
+push constant 0
+return
+label IF_FALSE2
+push local 0
+push constant 37
+eq
+if-goto IF_TRUE3
+goto IF_FALSE3
+label IF_TRUE3
+call Output.println 0
+pop temp 0
+push static 0
+call Game.GetCurrWord 1
+call CLI.PromptForGuess 1
+pop local 0
+label IF_FALSE3
+push local 0
+push constant 35
+eq
+if-goto IF_TRUE4
+goto IF_FALSE4
+label IF_TRUE4
+call Output.println 0
+pop temp 0
+push constant 0
+not
+push constant 0
+not
+call GameManager.RunGame 2
+pop temp 0
+push constant 0
+return
+label IF_FALSE4
+label IF_FALSE1
+push static 0
+push local 0
+call Game.GuessLetter 2
+pop local 1
+push local 1
+call GameManager.UpdateStatus 1
+pop temp 0
+push static 1
+push static 4
+push static 5
+call CLI.PrintStatus 3
+pop temp 0
+goto WHILE_EXP0
+label WHILE_END0
+call GameManager.HandleEnding 0
+pop temp 0
+push constant 0
+return
+function GameManager.HandleEnding 0
+push static 4
+push constant 1
+lt
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push constant 9
+call String.new 1
+push constant 89
+call String.appendChar 2
+push constant 79
+call String.appendChar 2
+push constant 85
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 76
+call String.appendChar 2
+push constant 79
+call String.appendChar 2
+push constant 83
+call String.appendChar 2
+push constant 84
+call String.appendChar 2
+push constant 33
+call String.appendChar 2
+call CLI.PrintMessage 1
+pop temp 0
+push constant 0
+return
+label IF_FALSE0
+push constant 25
+call String.new 1
+push constant 67
+call String.appendChar 2
+push constant 79
+call String.appendChar 2
+push constant 78
+call String.appendChar 2
+push constant 71
+call String.appendChar 2
+push constant 82
+call String.appendChar 2
+push constant 65
+call String.appendChar 2
+push constant 84
+call String.appendChar 2
+push constant 85
+call String.appendChar 2
+push constant 76
+call String.appendChar 2
+push constant 65
+call String.appendChar 2
+push constant 84
+call String.appendChar 2
+push constant 73
+call String.appendChar 2
+push constant 79
+call String.appendChar 2
+push constant 78
+call String.appendChar 2
+push constant 83
+call String.appendChar 2
+push constant 44
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 89
+call String.appendChar 2
+push constant 79
+call String.appendChar 2
+push constant 85
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 87
+call String.appendChar 2
+push constant 79
+call String.appendChar 2
+push constant 78
+call String.appendChar 2
+push constant 33
+call String.appendChar 2
+call CLI.PrintMessage 1
+pop temp 0
+call WordManager.MoreInSet 0
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push constant 87
+call String.new 1
+push constant 68
+call String.appendChar 2
+push constant 111
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 121
+call String.appendChar 2
+push constant 111
+call String.appendChar 2
+push constant 117
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 119
+call String.appendChar 2
+push constant 97
+call String.appendChar 2
+push constant 110
+call String.appendChar 2
+push constant 116
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 116
+call String.appendChar 2
+push constant 111
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 99
+call String.appendChar 2
+push constant 111
+call String.appendChar 2
+push constant 110
+call String.appendChar 2
+push constant 116
+call String.appendChar 2
+push constant 105
+call String.appendChar 2
+push constant 110
+call String.appendChar 2
+push constant 117
+call String.appendChar 2
+push constant 101
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 112
+call String.appendChar 2
+push constant 108
+call String.appendChar 2
+push constant 97
+call String.appendChar 2
+push constant 121
+call String.appendChar 2
+push constant 105
+call String.appendChar 2
+push constant 110
+call String.appendChar 2
+push constant 103
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 105
+call String.appendChar 2
+push constant 110
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 116
+call String.appendChar 2
+push constant 104
+call String.appendChar 2
+push constant 101
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 115
+call String.appendChar 2
+push constant 97
+call String.appendChar 2
+push constant 109
+call String.appendChar 2
+push constant 101
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 115
+call String.appendChar 2
+push constant 101
+call String.appendChar 2
+push constant 116
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 40
+call String.appendChar 2
+push constant 121
+call String.appendChar 2
+push constant 111
+call String.appendChar 2
+push constant 117
+call String.appendChar 2
+push constant 114
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 115
+call String.appendChar 2
+push constant 99
+call String.appendChar 2
+push constant 111
+call String.appendChar 2
+push constant 114
+call String.appendChar 2
+push constant 101
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 119
+call String.appendChar 2
+push constant 105
+call String.appendChar 2
+push constant 108
+call String.appendChar 2
+push constant 108
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 98
+call String.appendChar 2
+push constant 101
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 97
+call String.appendChar 2
+push constant 99
+call String.appendChar 2
+push constant 99
+call String.appendChar 2
+push constant 117
+call String.appendChar 2
+push constant 109
+call String.appendChar 2
+push constant 117
+call String.appendChar 2
+push constant 108
+call String.appendChar 2
+push constant 97
+call String.appendChar 2
+push constant 116
+call String.appendChar 2
+push constant 101
+call String.appendChar 2
+push constant 100
+call String.appendChar 2
+push constant 41
+call String.appendChar 2
+push constant 63
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 89
+call String.appendChar 2
+push constant 47
+call String.appendChar 2
+push constant 78
+call String.appendChar 2
+push constant 58
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+call CLI.ConfirmAction 1
+if-goto IF_TRUE2
+goto IF_FALSE2
+label IF_TRUE2
+call CLI.ClearIfFull 0
+pop temp 0
+call GameManager.SetWord 0
+pop temp 0
+call Output.println 0
+pop temp 0
+push constant 0
+push constant 0
+call GameManager.RunGame 2
+pop temp 0
+goto IF_END2
+label IF_FALSE2
+push constant 14
+call String.new 1
+push constant 71
+call String.appendChar 2
+push constant 97
+call String.appendChar 2
+push constant 109
+call String.appendChar 2
+push constant 101
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 102
+call String.appendChar 2
+push constant 105
+call String.appendChar 2
+push constant 110
+call String.appendChar 2
+push constant 105
+call String.appendChar 2
+push constant 115
+call String.appendChar 2
+push constant 104
+call String.appendChar 2
+push constant 101
+call String.appendChar 2
+push constant 100
+call String.appendChar 2
+push constant 46
+call String.appendChar 2
+call CLI.PrintMessage 1
+pop temp 0
+label IF_END2
+goto IF_END1
+label IF_FALSE1
+push constant 84
+call String.new 1
+push constant 83
+call String.appendChar 2
+push constant 101
+call String.appendChar 2
+push constant 116
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 100
+call String.appendChar 2
+push constant 111
+call String.appendChar 2
+push constant 110
+call String.appendChar 2
+push constant 101
+call String.appendChar 2
+push constant 46
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 68
+call String.appendChar 2
+push constant 111
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 121
+call String.appendChar 2
+push constant 111
+call String.appendChar 2
+push constant 117
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 119
+call String.appendChar 2
+push constant 97
+call String.appendChar 2
+push constant 110
+call String.appendChar 2
+push constant 116
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 116
+call String.appendChar 2
+push constant 111
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 112
+call String.appendChar 2
+push constant 108
+call String.appendChar 2
+push constant 97
+call String.appendChar 2
+push constant 121
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 119
+call String.appendChar 2
+push constant 105
+call String.appendChar 2
+push constant 116
+call String.appendChar 2
+push constant 104
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 97
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 110
+call String.appendChar 2
+push constant 101
+call String.appendChar 2
+push constant 119
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 115
+call String.appendChar 2
+push constant 101
+call String.appendChar 2
+push constant 116
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 40
+call String.appendChar 2
+push constant 121
+call String.appendChar 2
+push constant 111
+call String.appendChar 2
+push constant 117
+call String.appendChar 2
+push constant 114
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 115
+call String.appendChar 2
+push constant 99
+call String.appendChar 2
+push constant 111
+call String.appendChar 2
+push constant 114
+call String.appendChar 2
+push constant 101
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 119
+call String.appendChar 2
+push constant 105
+call String.appendChar 2
+push constant 108
+call String.appendChar 2
+push constant 108
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 98
+call String.appendChar 2
+push constant 101
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 97
+call String.appendChar 2
+push constant 99
+call String.appendChar 2
+push constant 99
+call String.appendChar 2
+push constant 117
+call String.appendChar 2
+push constant 109
+call String.appendChar 2
+push constant 117
+call String.appendChar 2
+push constant 108
+call String.appendChar 2
+push constant 97
+call String.appendChar 2
+push constant 116
+call String.appendChar 2
+push constant 101
+call String.appendChar 2
+push constant 100
+call String.appendChar 2
+push constant 41
+call String.appendChar 2
+push constant 63
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 89
+call String.appendChar 2
+push constant 47
+call String.appendChar 2
+push constant 78
+call String.appendChar 2
+push constant 58
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+call CLI.ConfirmAction 1
+if-goto IF_TRUE3
+goto IF_FALSE3
+label IF_TRUE3
+push constant 0
+not
+push constant 0
+call GameManager.RunGame 2
+pop temp 0
+label IF_FALSE3
+label IF_END1
+push constant 0
+return
+function GameManager.SetGame 0
+push argument 0
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push constant 0
+pop static 1
+label IF_FALSE0
+call WordManager.Initialize 0
+pop temp 0
+call GameManager.SetSet 0
+pop temp 0
+call GameManager.SetWord 0
+pop temp 0
+call GameManager.SetDifficulty 0
+pop temp 0
+push static 1
+push static 4
+push static 5
+call CLI.PrintStatus 3
+pop temp 0
+push constant 0
+return
+function GameManager.SetSet 0
+call WordManager.GetSets 0
+call CLI.PromptForSet 1
+pop static 5
+push static 5
+call WordManager.SetSet 1
+pop temp 0
+push constant 0
+return
+function GameManager.SetWord 1
+call WordManager.GetNext 0
+pop local 0
+push local 0
+call Game.new 1
+pop static 0
+push local 0
+call Memory.deAlloc 1
+pop temp 0
+push constant 0
+return
+function GameManager.SetDifficulty 0
+call CLI.PromptForDifficulty 0
+pop static 3
+push static 0
+call Game.GetMapSize 1
+push constant 2
+call Math.multiply 2
+push static 3
+push constant 3
+call Math.multiply 2
+sub
+pop static 4
+push static 3
+pop static 2
+push constant 0
+return
+function GameManager.UpdateStatus 0
+push argument 0
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push static 1
+push constant 100
+add
+push constant 100
+push static 2
+call Math.multiply 2
+add
+pop static 1
+goto IF_END0
+label IF_FALSE0
+call Output.println 0
+pop temp 0
+push constant 12
+call String.new 1
+push constant 87
+call String.appendChar 2
+push constant 114
+call String.appendChar 2
+push constant 111
+call String.appendChar 2
+push constant 110
+call String.appendChar 2
+push constant 103
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 103
+call String.appendChar 2
+push constant 117
+call String.appendChar 2
+push constant 101
+call String.appendChar 2
+push constant 115
+call String.appendChar 2
+push constant 115
+call String.appendChar 2
+push constant 46
+call String.appendChar 2
+call OutputExt.printString 1
+pop temp 0
+call Output.println 0
+pop temp 0
+push static 4
+push constant 1
+sub
+pop static 4
+label IF_END0
+push constant 0
+return
+function GameManager.Dispose 0
+push static 0
+push constant 0
+eq
+not
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push static 0
+call Game.Dispose 1
+pop temp 0
+label IF_FALSE0
+push static 5
+push constant 0
+eq
+not
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push static 5
+call Memory.deAlloc 1
+pop temp 0
+label IF_FALSE1
+push constant 0
+return

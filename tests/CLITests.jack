@@ -1,0 +1,30 @@
+class CLITests {
+    function void Start() {
+        var boolean res;
+        let res = CLI.PromptForStart();
+        do Output.printInt(res);
+        do Output.println();
+        return;
+    }
+
+    function void SelectSet() {
+        do Output.printString(CLI.PromptForSet(WordManager.GetSets()));
+        return;
+    }
+
+    function void TakeGuess() {
+        do Output.printChar(CLI.PromptForGuess("____ ____"));
+        return;
+    }
+
+    function void SelectDifficulty() {
+        do Output.printInt(CLI.PromptForDifficulty());
+        return;
+
+    }
+
+    function void DisplayStatus() {
+        do CLI.DisplayStatus(50, 10, "GAMES");
+        return;
+    }
+}

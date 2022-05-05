@@ -1,0 +1,278 @@
+/**
+* Static class to handle all i/o operations.
+* Every function clears the screen if the last row contains any letter.
+*/
+class CLI {
+    /** PUBLIC: Prompts the user to start the game. */
+    function void PromptForStart() {
+        var char key;
+        let key = 0;
+
+        do CLI.ClearIfFull();
+
+        do CLI.PrintStarterInfo();
+        do OutputExt.printString("Press S to start a new game: ");
+
+        while (~(key = 83)) {
+            let key = Keyboard.readChar();
+        }
+
+        do Output.println();
+        do Output.println();
+        return;
+    }
+
+    /**
+    PUBLIC:
+    * Prompts the user to select a set to get words from.
+    * PARAMS:
+    * - sets: The name list of available sets.
+    * RETURNS: The name of the set to select.
+    */
+    function String PromptForSet(List sets) {
+        var boolean validSet;
+        var String selectedSet; 
+        let validSet = false;
+
+        do CLI.ClearIfFull();
+
+        do OutputExt.printString("Available sets: ");
+        do sets.printAsString();
+        do Output.println();
+
+        // Awaits for the users input
+        let selectedSet = Keyboard.readLine("Type which set to get a word from: ");
+        while (~(CLI.ValidateSet(selectedSet, sets))) {
+            let selectedSet = Keyboard.readLine("Invalid set. Please type a valid set: ");
+        }
+
+        do Output.println();
+        return selectedSet;
+    }
+
+    /**
+    PUBLIC:
+    * Prompts the user to input a difficulty level.
+    * RETURNS: The difficulty level to set.
+    */
+    function int PromptForDifficulty() {
+        var int difficulty;
+        let difficulty = -1;
+
+        do CLI.ClearIfFull();
+
+        do OutputExt.printString("Select a difficulty level. This will affect how many attempts you have for the word.");
+        do Output.println();
+        let difficulty =  Keyboard.readInt("0 = easy, 1 = normal, 2 = hard: ");
+
+        while (~((difficulty > -1) & (difficulty < 3))) {
+            let difficulty =  Keyboard.readInt("Please input a valid difficulty level. 0 = easy, 1 = normal, 2 = hard: ");
+        }
+
+        return difficulty;
+    }
+
+    /**
+    PUBLIC:
+    * Prompts the user to guess a letter.
+    * PARAMS:
+    * - hiddenWord: The word to guess in its most up-to-date status.
+    * RETURNS: The guessed letter/digit, or a control character.
+    *          CONTROL CHARACTERS: % - Continue, # - Quit, ! - Restart
+    */
+    function char PromptForGuess(String hiddenWord) {
+        var char input;
+
+        do CLI.ClearIfFull();
+
+        do Output.printString(hiddenWord);
+        do Output.println();
+        do OutputExt.printString("Guess a letter or digit. (Type / to input a game command): ");
+        let input = Keyboard.readChar();
+        do Output.println();
+
+        while (~((input = 47) | (((input > 64) & (input < 91)) | ((input > 47) & (input < 58))))) {
+            do OutputExt.printString("Invalid input. Please type a letter or digit. (Type / to input a game command): ");
+            let input = Keyboard.readChar();
+            do Output.println();
+        }
+
+        if ((input > 64) & (input < 91)) { let input = input + 32; } // Uppercase to lower
+        if (input = 47) { let input = CLI.PromptForCommand(); }
+
+        if (input = 34) { let input = CLI.PromptForGuess(hiddenWord); }
+
+        return input;
+    }
+
+    /**
+    PUBLIC:
+    * Displays the current status of the game.
+    * PARAMS:
+    * - score: The current score.
+    * - attemptsLeft: The number of attempts left before game over.
+    * - set: The word set the word belongs to.
+    */
+    function void PrintStatus(int score, int attemptsLeft, String set) {
+        do CLI.ClearIfFull();
+
+        do OutputExt.printString("Score: ");
+        do Output.printInt(score);
+        do OutputExt.printString(" | Attempts left: ");
+        do Output.printInt(attemptsLeft);
+        do OutputExt.printString(" | Set: ");
+        do Output.printString(set);
+        do Output.println();
+        do Output.println();
+
+        return;
+    }
+
+    /** PUBLIC: Prints the starter text and instructions. */
+    function void PrintStarterInfo() {
+        do CLI.ClearIfFull();
+
+        do OutputExt.printString("Jack Hangman, by Exkywor.");
+        do Output.println();
+        do Output.println();
+        do OutputExt.printString("The objective of the game is to guess a hidden word, from the selected set of words, ");
+        do OutputExt.printString("by guessing one letter contained in the word at a time before running out of attempts.");
+        do Output.println();
+        do OutputExt.printString("The number of attempts will be decided based on the length of the word and the selected difficulty.");
+        do Output.println();
+        do Output.println();
+
+        return;
+    }
+
+    /**
+    PRIVATE:
+    * Prompts the user for a game command, then translates it to its symbolic character.
+    * RETURNS: The command character.
+    */
+    function char PromptForCommand() {
+        var char input;
+
+        do CLI.ClearIfFull();
+
+        do Output.println();
+        do OutputExt.printString("COMMANDS: C - continue the game, R - restart the game, Q - quit the game");
+        do Output.println();
+        do OutputExt.printString("Input a command: ");
+        let input = Keyboard.readChar();
+        do Output.println();
+
+        while (~((input = 67) | (input = 82) | (input = 81))) {
+            do OutputExt.printString("Invalid command. Please input a valid command: ");
+            let input = Keyboard.readChar();
+            do Output.println();
+        }
+
+        if (input = 67) { // C = %
+            let input = 37;
+        }
+        if (input = 82) { // R = #
+            if (CLI.ConfirmAction("Restart the game? Y/N: ")) { let input = 35; }
+            else { let input = CLI.PromptForCommand(); }
+        }
+        if (input = 81) { // Q = !
+            if (CLI.ConfirmAction("Quit the game? Y/N: ")) { let input = 33; }
+            else { let input = CLI.PromptForCommand(); }
+        }
+
+        return input;
+    }
+
+    /**
+    PUBLIC:
+    * Prints a message, while clearing the screen and adding a line afterwards.
+    * PARAMS:
+    * - msg: The message to display.
+    */ 
+    function void PrintMessage(String msg) {
+        do CLI.ClearIfFull();
+
+        do Output.printString(msg);
+        do Output.println();
+        do Output.println();
+
+        return;
+    }
+
+    /**
+    PRIVATE:
+    * Verifies whether or not a set is contained within a list of sets
+    * PARAMS:
+    * - set: The set to validate.
+    * - sets: The list of valid sets.
+    * RETURNS: True if the set is valid.
+    */
+    function boolean ValidateSet(String set, List sets) {
+        var List availableSets;
+        let availableSets = sets;
+
+        do CLI.ClearIfFull();
+
+        while (~(availableSets = null)) {
+            if (StringExt.Compare(set, availableSets.getData())) {
+                return true;
+            }
+            let availableSets = availableSets.getNext();
+        }
+
+        return false;
+    }
+
+    /**
+    PUBLIC:
+    * Prompts the user for confirmation on a message.
+    * PARAMS:
+    * - msg: Prompt to display to the user.
+    * RETURN: True if the user input is Y and false if it's N.
+    */
+    function boolean ConfirmAction(String msg) {
+        var char input;
+        var boolean res;
+        var boolean exit;
+        let exit = false;
+
+        do CLI.ClearIfFull();
+
+        while (~exit) {
+            do Output.printString(msg);
+            let input = Keyboard.readChar();
+            do Output.println();
+
+            if ((input = 89) | (input = 78)) { let exit = true; }
+        }
+
+        if (input = 89) { let res = true; }
+        if (input = 78) { let res = false; }
+
+        return res;
+    }
+
+    /** PUBLIC: Clears the screen if its last row contains any character. */
+    function void ClearIfFull() {
+        var int register;
+        var int currAddr;
+        var int maxAddr;
+        let register = 0;
+        let currAddr = 24096; // Starts at the address of the last row of characters (screen row 242)
+        let maxAddr = 24575; // End of the last row of characters
+
+        while ((register = 0) & (currAddr < maxAddr)) {
+            let register = Memory.peek(currAddr);
+            if (~(register = 0)) {
+                do OutputExt.printString("HERE WE ARE, YES, HERE!");
+                do Output.println();
+                do Output.println();
+                do Screen.clearScreen();
+                return;
+            }
+            let currAddr = currAddr + 1;
+        }
+
+        return;
+    }
+}

@@ -1,0 +1,113 @@
+/**
+* Game class. Its members handle the setting and guessing of the given word.
+*/
+class Game {
+    field String _targetWord; // Word to guess, without hidden characters.
+    field String _currWord; // Current state of the word to guess.
+    field Dictionary _lettersMap; // key: letter, value: list of indices where the letter appears
+
+    /**
+    PUBLIC:
+    * Initializes a new Game instance.
+    * PARAMS:
+    * - word: Word to guess. */
+    constructor Game new(String word) {
+        let _targetWord = StringExt.Copy(word);
+        do PrepareWord();
+
+        return this;
+    }
+
+    method String GetCurrWord() { return _currWord; }
+    method boolean IsGuessed() { return _lettersMap = null; }
+    method int GetMapSize() { return _lettersMap.getCount(); }
+
+    /**
+    PUBLIC:
+    * Guess a letter from the _currWord.
+    * PARAMS:
+    * - c: Guessed letter.
+    * RETURN: True if the guess was correct. */
+    method boolean GuessLetter(char c) {
+        var String guess;
+        let guess = StringExt.CharToStr(c);
+
+        if (_lettersMap.containsKey(guess)) { do UpdateWord(guess); return true; }
+        else { return false; }
+    }
+
+    /**
+    PRIVATE:
+    * Prepares the word to be guessed by hidding all its letters and preparing a map
+    * of every unique letter with a list of where it appears in the word.
+    */
+    method void PrepareWord() {
+        var int i;
+        var int targetSize;
+        var String letter;
+        var List temp;
+
+        let i = 0;
+        let targetSize = _targetWord.length();
+        let _currWord = String.new(targetSize);
+
+        // Set _currWord to the length of the target word,
+        // and adds letters with their indices to the _lettersMap
+        while (i < targetSize) {
+            let letter = StringExt.CharToStr(_targetWord.charAt(i));
+            if (~(StringExt.Compare(letter, " "))) { // letter is not whitespace
+                do _currWord.appendChar(95);
+                let temp = _lettersMap.get(letter);
+                let temp = List.new(i, temp); // Append the letter
+
+                if (_lettersMap = null) { let _lettersMap = Dictionary.new(letter, temp, null); }
+                else { do _lettersMap.add(letter, temp); }
+            } else {
+                do _currWord.appendChar(32);
+            }
+
+            let i = i+1;
+        }
+
+        return;
+    }
+
+    /**
+    PRIVATE:
+    * Update the word after a guess.
+    * PARAMS:
+    * - guess: A correctly guessed letter.
+    */
+    method void UpdateWord(String guess) {
+        var int i;
+        var int n;
+        var List indices;
+        var int index;
+
+        let i = 0;
+        let indices = _lettersMap.get(guess);
+        let n = indices.getSize();
+
+        while (~(indices = null)) {
+            let index = indices.getData();
+            do _currWord.setCharAt(index, guess.charAt(0));
+
+            let indices = indices.getNext();
+        }
+
+        // Remove the letter from the map,
+        if (_lettersMap.getCount() = 1) { let _lettersMap = null; }
+        else { do _lettersMap.remove(guess); }
+
+        return;
+    }
+
+    /** PUBLIC: Disposes this game. */
+    method void Dispose() {
+        if (~(_lettersMap = null)) { do _lettersMap.dispose(); }
+        do Memory.deAlloc(_targetWord);
+        do Memory.deAlloc(_currWord);
+        do Memory.deAlloc(this);
+        return;
+    }
+}

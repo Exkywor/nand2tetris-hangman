@@ -1,0 +1,61 @@
+class StringExtTests {
+    function void Copy() {
+        var String a;
+        var String b;
+        var char c;
+        let a = "foo"; let b = a; let c = 120;
+
+        do Output.printInt(a = b);
+        do Output.println();
+        do Output.printInt(StringExt.Compare(a, b));
+        do Output.println();
+
+        do a.setCharAt(2, c);
+        do b.setCharAt(1, c);
+        do Output.printString(a);
+        do Output.println();
+        do Output.printString(b);
+        do Output.println();
+
+        let b = StringExt.Copy(a);
+        let c = 111;
+        do b.setCharAt(2, c);
+        do Output.printString(a);
+        do Output.println();
+        do Output.printString(b);
+        do Output.println();
+        do Output.printInt(a = b);
+        do Output.println();
+        
+        return;
+    }
+
+    function void Compare() {
+        do Output.printInt(StringExt.Compare("a", "b"));
+        do Output.println();
+        do Output.printInt(StringExt.Compare("b", "b"));
+        do Output.println();
+        do Output.printInt(StringExt.Compare("B", "b"));
+        do Output.println();
+        do Output.printInt(StringExt.Compare("bb", "b"));
+        do Output.println();
+        do Output.printInt(StringExt.Compare("BB", "BB"));
+        do Output.println();
+        do Output.printInt(StringExt.Compare("Just testing if this works!", "Just testing if this works!"));
+        do Output.println();
+        do Output.printInt(StringExt.Compare("Just testing if ths works!", "Just testing if this works!"));
+        do Output.println();
+
+        return;
+    }
+
+    function void CharToStr() {
+        var char c;
+        var String str;
+        let c = 72;
+        let str = StringExt.CharToStr(c);
+        do Output.printString(str);
+
+        return;
+    }
+}

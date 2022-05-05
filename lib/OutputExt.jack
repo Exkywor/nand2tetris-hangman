@@ -1,0 +1,17 @@
+/**
+* Static extension functions for the Output class.
+*/
+class OutputExt {
+    /**
+    PUBLIC:
+    * Prints the input string, then disposes it.
+    * This is a fix to the memory leak of OutputExt.printString(), by Mark Armbrust.
+    * PARAMS:
+    * - s: String to print and dispose.
+    */
+    function void printString(String s) {
+        do Output.printString(s);
+        do s.dispose();
+        return;
+    }
+}

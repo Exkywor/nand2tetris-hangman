@@ -1,0 +1,78 @@
+/**
+* Static extension functions for the String class.
+*/
+class StringExt {
+    /**
+    PUBLIC:
+    * Compares two strings by value, rather than by reference.
+    * PARAMS:
+    - a, b: Strings to compare.
+    * RETURNS: True if two strings are the same */
+    function boolean Compare(String a, String b) {
+        var int lenA;
+        var int lenB;
+        var char charA;
+        var char charB;
+        var int comp;
+        var int i;
+        var int sum; // 0 if all characters match
+        
+        let i = 0;
+        let sum = 0;
+        let lenA = a.length();
+        let lenB = b.length();
+        
+        if (~(lenA = lenB)) { return false; } // Strings of different length
+
+        while (i < lenA) {
+            let charA = a.charAt(i);
+            let charB = b.charAt(i);
+
+            let comp = (~(charA = charB)); // We want to add 0 to sum if the two chars are the same
+            let sum = sum + comp;
+            let i = i+1;
+        }
+
+        return sum = 0;
+    }
+
+    /**
+    PUBLIC:
+    * Copies the source String into a new String by value, rather than by reference.
+    * PARAMS:
+    * - source: The String to copy.
+    * RETURNS: The new string. */
+    function String Copy(String source) {
+        var int i;
+        var char c;
+        var int len;
+        var String copy;
+        
+        let i = 0;
+        let len = source.length();
+        let copy = String.new(len);
+
+        while(i < len) {
+            let c = source.charAt(i);
+            do copy.appendChar(c);
+            let i = i+1;
+        }
+
+        return copy;
+    }
+
+    /**
+    PUBLIC:
+    * Puts the input character into a String of size 1.
+    * PARAMS:
+    * - c: The character to inser into a new String.
+    * RETURNS: A String containing the input character.
+    */
+    function String CharToStr(char c) {
+        var String str;
+        let str = String.new(1);
+        do str.appendChar(95);
+        do str.setCharAt(0, c);
+        return str;
+    }
+}

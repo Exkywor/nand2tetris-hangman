@@ -1,0 +1,100 @@
+function StringExt.Compare 7
+push constant 0
+pop local 5
+push constant 0
+pop local 6
+push argument 0
+call String.length 1
+pop local 0
+push argument 1
+call String.length 1
+pop local 1
+push local 0
+push local 1
+eq
+not
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push constant 0
+return
+label IF_FALSE0
+label WHILE_EXP0
+push local 5
+push local 0
+lt
+not
+if-goto WHILE_END0
+push argument 0
+push local 5
+call String.charAt 2
+pop local 2
+push argument 1
+push local 5
+call String.charAt 2
+pop local 3
+push local 2
+push local 3
+eq
+not
+pop local 4
+push local 6
+push local 4
+add
+pop local 6
+push local 5
+push constant 1
+add
+pop local 5
+goto WHILE_EXP0
+label WHILE_END0
+push local 6
+push constant 0
+eq
+return
+function StringExt.Copy 4
+push constant 0
+pop local 0
+push argument 0
+call String.length 1
+pop local 2
+push local 2
+call String.new 1
+pop local 3
+label WHILE_EXP0
+push local 0
+push local 2
+lt
+not
+if-goto WHILE_END0
+push argument 0
+push local 0
+call String.charAt 2
+pop local 1
+push local 3
+push local 1
+call String.appendChar 2
+pop temp 0
+push local 0
+push constant 1
+add
+pop local 0
+goto WHILE_EXP0
+label WHILE_END0
+push local 3
+return
+function StringExt.CharToStr 1
+push constant 1
+call String.new 1
+pop local 0
+push local 0
+push constant 95
+call String.appendChar 2
+pop temp 0
+push local 0
+push constant 0
+push argument 0
+call String.setCharAt 3
+pop temp 0
+push local 0
+return

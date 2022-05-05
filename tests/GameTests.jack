@@ -1,0 +1,80 @@
+class GameTests {
+    function void Set() {
+        var Game game;
+        let game = Game.new("mass effect");
+        do Output.printString(game.GetCurrWord());
+        do Output.println();
+
+        return;
+    }
+
+    function void Update() {
+        var Game game;
+        var int res;
+
+        let game = Game.new("mass effect");
+
+        do OutputExt.printString("Guessed? ");
+        do Output.printInt(game.IsGuessed());
+        do Output.println();
+
+        do Output.printInt(game.GuessLetter(115));
+        do Output.println();
+        do Output.printString(game.GetCurrWord());
+        do Output.println();
+
+        do Output.printInt(game.GuessLetter(98));
+        do Output.println();
+        do Output.printString(game.GetCurrWord());
+        do Output.println();
+
+        do Output.printInt(game.GuessLetter(101));
+        do Output.println();
+        do Output.printString(game.GetCurrWord());
+        do Output.println();
+
+        do Output.printInt(game.GuessLetter(99));
+        do Output.println();
+        do Output.printString(game.GetCurrWord());
+        do Output.println();
+
+        do Output.printInt(game.GuessLetter(116));
+        do Output.println();
+        do Output.printString(game.GetCurrWord());
+        do Output.println();
+
+        do Output.printInt(game.GuessLetter(109));
+        do Output.println();
+        do Output.printString(game.GetCurrWord());
+        do Output.println();
+
+        do Output.printInt(game.GuessLetter(97));
+        do Output.println();
+        do Output.printString(game.GetCurrWord());
+        do Output.println();
+
+        do OutputExt.printString("Guessed? ");
+        do Output.printInt(game.IsGuessed());
+        do Output.println();
+
+        do Output.printInt(game.GuessLetter(102));
+        do Output.println();
+        do Output.printString(game.GetCurrWord());
+        do Output.println();
+
+        do OutputExt.printString("Guessed? ");
+        do Output.printInt(game.IsGuessed());
+        do Output.println();
+
+        do Output.printInt(game.GuessLetter(109));
+        do Output.println();
+        do Output.printString(game.GetCurrWord());
+        do Output.println();
+
+        do OutputExt.printString("Guessed? ");
+        do Output.printInt(game.IsGuessed());
+        do Output.println();
+
+        return;
+    }
+}

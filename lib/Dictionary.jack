@@ -1,0 +1,199 @@
+/**
+* Dictionary implementation as a linked list with a key and a val field, based on the provided List implementation.
+* THIS IMPLEMENTATION IS BAD, as it doesn't allow for empty lists, and as such, the methods aren't
+* as clean as they could be. For a proper implementation and handling of empty Dictionaries it should be reimplement
+* as a linked list of key-value pairs, but for the purposes of this project, this implementation sufices.
+*/
+class Dictionary {
+    field String key;      // A dictionary consists of a key field,
+    field int val;         // a value field,
+    field Dictionary next; // followed by a dictionary
+
+    /** PUBLIC: Creates a non-empty Dictionary. */
+    constructor Dictionary new(String k, int v, Dictionary n) {
+        let key = k; let val = v; let next = n;
+        return this;
+    }
+
+    /** Accessors */
+    method String getKey() { return key; }
+    method int getVal() { return val; }
+    method int getNext() { return next; }
+
+    /**
+    PUBLIC:
+    * Gets a list of keys in the Dictionary. The first element in the list is the
+    * last element in the Dictionary.
+    * It's computed on every call to avoid dealing with desyncing and order issues.
+    * RETURNS: The list of keys.
+    */
+    method List getKeys() {
+        var List keys;
+        var Dictionary current; let current = this;
+
+        while(~(current = null)) {
+            let keys = List.new(current.getKey(), keys);
+            let current = current.getNext();
+        }
+
+        return keys;
+    }
+
+    /**
+    PUBLIC:
+    * Gets the count of nodes the dictionary contains. It's computed on every call to avoid
+    * dealing with desyncing.
+    * RETURNS: The number of nodes.
+    */
+    method int getCount() {
+        var int count;
+        var Dictionary current; let current = this;
+
+        while(~(current = null)) {
+            let count = count + 1;
+            let current = current.getNext();
+        }
+
+        return count;
+    }
+
+    /* Setters */
+    method void setKey(String k) { let key = k; return; }
+    method void setVal(int v) { let val = v; return; }
+    method void setNext(Dictionary nxt) { let next = nxt; return; }
+
+    /**
+    PUBLIC:
+    * Adds a new Dictionary with the given key and values. If the key already exists, its value is replaced.
+    * PARAMS:
+    * - k: Key to add.
+    * - v: Value to add.
+    */
+    method void add(String k, int v) {
+        var Dictionary oldDict;
+        let oldDict = Dictionary.new(key, val, next); // Save the current dictionary
+
+        if (containsKey(k)) { do update(k, v); } // If the key exists, update its value
+        else { let key = k; let val = v; let next = oldDict; } // Update the dictionary
+
+        return;
+    }
+
+    /**
+    PUBLIC:
+    * Update the value stored in the dictionary with key k, with v.
+    * PARAMS:
+    * - k: Key to update.
+    * - v: Value to set.
+    */
+    method void update(String k, int v) {
+        var Dictionary current; let current = this;
+
+        while (~(current = null)) {
+            if (StringExt.Compare(k, current.getKey())) { do current.setVal(v); }
+            let current = current.getNext();
+        }
+
+        return;
+    }
+
+    /**
+    PUBLIC:
+    * Removes a key and its value rom the dictionary, if it exists.
+    * WARNING: This does not work on 1-node dictionaries! The data will be disposed, but you'll still have access to it.
+    * PARAMS:
+    * - k: Key to remove.
+    */
+    method void remove(String k) {
+        var Dictionary child; var Dictionary grandchild;
+        var Dictionary current; let current = this;
+
+        while (~(current = null)) {
+            let child = current.getNext();
+
+            // We'll check first if a child exists, so that if it's the target
+            // and the last element we can completely remove it
+            if (~(child = null)) { // Handles Dictionary longer than 1 element
+                if (StringExt.Compare(k, child.getKey())) { // Check if the child is the target
+                    let grandchild = child.getNext();
+
+                    if (grandchild = null) { // Child is the last node
+                        do current.setNext(null);
+                        do Memory.deAlloc(child);
+                        return;
+                    } else { // We mimic grandchild into child, and remove grandchild
+                        do child.setKey(grandchild.getKey());
+                        do child.setVal(grandchild.getVal());
+                        do child.setNext(grandchild.getNext());
+                        do Memory.deAlloc(grandchild);
+                        return;
+                    }
+                } else {
+                    // Check if current is the target. If we don't check here, we would not check 2-element dictionaries where
+                    // the first element is the target
+                    if (StringExt.Compare(k, current.getKey())) {
+                        // We overwrite current with child's values to, effectively, remove this node.
+                        // We also discard child since it anc current are the same now.
+                        do current.setKey(child.getKey());
+                        do current.setVal(child.getVal());
+                        do current.setNext(child.getNext());
+                        do Memory.deAlloc(child);
+                        return;
+                    }
+                }
+            } else { // Handles 1-element dictionaries
+                if (StringExt.Compare(k, current.getKey())) {
+                    if (child = null) {
+                        do Memory.deAlloc(current); // We simply remove the node
+                        return;
+                    }
+                }
+            }
+            let current = current.getNext();
+        }
+        return;
+    }
+
+    /**
+    PUBLIC:
+    * Get the value of key k.
+    * PARAMS:
+    * - k: Key to get the value from.
+    * RETURNS: The value of the key, or 0 if the key does not exist.
+    */
+    method int get(String k) {
+        var Dictionary current; let current = this;
+
+        while (~(current = null)) {
+            if (StringExt.Compare(k, current.getKey())) { return current.getVal(); }
+            else { let current = current.getNext(); }
+        }
+        return 0;
+    }
+
+    /**
+    PUBLIC:
+    * Check if the Dictionary contains the given key.
+    * PARAMS:
+    * - k: Key to check.
+    * RETURNS: True if the key is in the dictionary.
+    */
+    method boolean containsKey(String k) {
+        var Dictionary current; let current = this;
+
+        while (~(current = null)) {
+            if (StringExt.Compare(k, current.getKey())) { return true; }
+            else { let current = current.getNext(); }
+        }
+        return false;
+    }
+
+    /** PUBLIC: Disposes this dictionary by recursively disposing its tail. */
+    method void dispose() {
+        if (~(next = null)) { do next.dispose(); }
+
+        do Memory.deAlloc(key);
+        do Memory.deAlloc(this);
+        return;
+    }
+}

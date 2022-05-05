@@ -1,0 +1,370 @@
+function Dictionary.new 0
+push constant 3
+call Memory.alloc 1
+pop pointer 0
+push argument 0
+pop this 0
+push argument 1
+pop this 1
+push argument 2
+pop this 2
+push pointer 0
+return
+function Dictionary.getKey 0
+push argument 0
+pop pointer 0
+push this 0
+return
+function Dictionary.getVal 0
+push argument 0
+pop pointer 0
+push this 1
+return
+function Dictionary.getNext 0
+push argument 0
+pop pointer 0
+push this 2
+return
+function Dictionary.getKeys 2
+push argument 0
+pop pointer 0
+push pointer 0
+pop local 1
+label WHILE_EXP0
+push local 1
+push constant 0
+eq
+not
+not
+if-goto WHILE_END0
+push local 1
+call Dictionary.getKey 1
+push local 0
+call List.new 2
+pop local 0
+push local 1
+call Dictionary.getNext 1
+pop local 1
+goto WHILE_EXP0
+label WHILE_END0
+push local 0
+return
+function Dictionary.getCount 2
+push argument 0
+pop pointer 0
+push pointer 0
+pop local 1
+label WHILE_EXP0
+push local 1
+push constant 0
+eq
+not
+not
+if-goto WHILE_END0
+push local 0
+push constant 1
+add
+pop local 0
+push local 1
+call Dictionary.getNext 1
+pop local 1
+goto WHILE_EXP0
+label WHILE_END0
+push local 0
+return
+function Dictionary.setKey 0
+push argument 0
+pop pointer 0
+push argument 1
+pop this 0
+push constant 0
+return
+function Dictionary.setVal 0
+push argument 0
+pop pointer 0
+push argument 1
+pop this 1
+push constant 0
+return
+function Dictionary.setNext 0
+push argument 0
+pop pointer 0
+push argument 1
+pop this 2
+push constant 0
+return
+function Dictionary.add 1
+push argument 0
+pop pointer 0
+push this 0
+push this 1
+push this 2
+call Dictionary.new 3
+pop local 0
+push pointer 0
+push argument 1
+call Dictionary.containsKey 2
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push pointer 0
+push argument 1
+push argument 2
+call Dictionary.update 3
+pop temp 0
+goto IF_END0
+label IF_FALSE0
+push argument 1
+pop this 0
+push argument 2
+pop this 1
+push local 0
+pop this 2
+label IF_END0
+push constant 0
+return
+function Dictionary.update 1
+push argument 0
+pop pointer 0
+push pointer 0
+pop local 0
+label WHILE_EXP0
+push local 0
+push constant 0
+eq
+not
+not
+if-goto WHILE_END0
+push argument 1
+push local 0
+call Dictionary.getKey 1
+call StringExt.Compare 2
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push local 0
+push argument 2
+call Dictionary.setVal 2
+pop temp 0
+label IF_FALSE0
+push local 0
+call Dictionary.getNext 1
+pop local 0
+goto WHILE_EXP0
+label WHILE_END0
+push constant 0
+return
+function Dictionary.remove 3
+push argument 0
+pop pointer 0
+push pointer 0
+pop local 2
+label WHILE_EXP0
+push local 2
+push constant 0
+eq
+not
+not
+if-goto WHILE_END0
+push local 2
+call Dictionary.getNext 1
+pop local 0
+push local 0
+push constant 0
+eq
+not
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push argument 1
+push local 0
+call Dictionary.getKey 1
+call StringExt.Compare 2
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push local 0
+call Dictionary.getNext 1
+pop local 1
+push local 1
+push constant 0
+eq
+if-goto IF_TRUE2
+goto IF_FALSE2
+label IF_TRUE2
+push local 2
+push constant 0
+call Dictionary.setNext 2
+pop temp 0
+push local 0
+call Memory.deAlloc 1
+pop temp 0
+push constant 0
+return
+goto IF_END2
+label IF_FALSE2
+push local 0
+push local 1
+call Dictionary.getKey 1
+call Dictionary.setKey 2
+pop temp 0
+push local 0
+push local 1
+call Dictionary.getVal 1
+call Dictionary.setVal 2
+pop temp 0
+push local 0
+push local 1
+call Dictionary.getNext 1
+call Dictionary.setNext 2
+pop temp 0
+push local 1
+call Memory.deAlloc 1
+pop temp 0
+push constant 0
+return
+label IF_END2
+goto IF_END1
+label IF_FALSE1
+push argument 1
+push local 2
+call Dictionary.getKey 1
+call StringExt.Compare 2
+if-goto IF_TRUE3
+goto IF_FALSE3
+label IF_TRUE3
+push local 2
+push local 0
+call Dictionary.getKey 1
+call Dictionary.setKey 2
+pop temp 0
+push local 2
+push local 0
+call Dictionary.getVal 1
+call Dictionary.setVal 2
+pop temp 0
+push local 2
+push local 0
+call Dictionary.getNext 1
+call Dictionary.setNext 2
+pop temp 0
+push local 0
+call Memory.deAlloc 1
+pop temp 0
+push constant 0
+return
+label IF_FALSE3
+label IF_END1
+goto IF_END0
+label IF_FALSE0
+push argument 1
+push local 2
+call Dictionary.getKey 1
+call StringExt.Compare 2
+if-goto IF_TRUE4
+goto IF_FALSE4
+label IF_TRUE4
+push local 0
+push constant 0
+eq
+if-goto IF_TRUE5
+goto IF_FALSE5
+label IF_TRUE5
+push local 2
+call Memory.deAlloc 1
+pop temp 0
+push constant 0
+return
+label IF_FALSE5
+label IF_FALSE4
+label IF_END0
+push local 2
+call Dictionary.getNext 1
+pop local 2
+goto WHILE_EXP0
+label WHILE_END0
+push constant 0
+return
+function Dictionary.get 1
+push argument 0
+pop pointer 0
+push pointer 0
+pop local 0
+label WHILE_EXP0
+push local 0
+push constant 0
+eq
+not
+not
+if-goto WHILE_END0
+push argument 1
+push local 0
+call Dictionary.getKey 1
+call StringExt.Compare 2
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push local 0
+call Dictionary.getVal 1
+return
+goto IF_END0
+label IF_FALSE0
+push local 0
+call Dictionary.getNext 1
+pop local 0
+label IF_END0
+goto WHILE_EXP0
+label WHILE_END0
+push constant 0
+return
+function Dictionary.containsKey 1
+push argument 0
+pop pointer 0
+push pointer 0
+pop local 0
+label WHILE_EXP0
+push local 0
+push constant 0
+eq
+not
+not
+if-goto WHILE_END0
+push argument 1
+push local 0
+call Dictionary.getKey 1
+call StringExt.Compare 2
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push constant 0
+not
+return
+goto IF_END0
+label IF_FALSE0
+push local 0
+call Dictionary.getNext 1
+pop local 0
+label IF_END0
+goto WHILE_EXP0
+label WHILE_END0
+push constant 0
+return
+function Dictionary.dispose 0
+push argument 0
+pop pointer 0
+push this 2
+push constant 0
+eq
+not
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push this 2
+call Dictionary.dispose 1
+pop temp 0
+label IF_FALSE0
+push pointer 0
+call Memory.deAlloc 1
+pop temp 0
+push constant 0
+return

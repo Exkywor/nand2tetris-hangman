@@ -1,0 +1,58 @@
+class WordManagerTests {
+    function void Set() {
+        var List selectedSet;
+        do WordManager.SetSet("GAMES");
+        let selectedSet = WordManager.GetSelectedSet();
+        do selectedSet.printAsString();
+        do Output.println();
+        do WordManager.SetSet("ANIME");
+        let selectedSet = WordManager.GetSelectedSet();
+        do selectedSet.printAsString();
+        do Output.println();
+        do WordManager.SetSet("MOVIES");
+        let selectedSet = WordManager.GetSelectedSet();
+        do selectedSet.printAsString();
+        do Output.println();
+
+        return;
+    }
+
+    function void Get() {
+        var String word;
+
+        do WordManager.SetSet("ANIME");
+        let word = WordManager.GetNext();
+        do Output.printString(word);
+        do Output.println();
+        let word = WordManager.GetNext();
+        do Output.printString(word);
+        do Output.println();
+        let word = WordManager.GetNext();
+        do Output.printString(word);
+        do Output.println();
+        let word = WordManager.GetNext();
+        do Output.printString(word);
+        do Output.println();
+
+        do WordManager.SetSet("MOVIES");
+        let word = WordManager.GetNext();
+        do Output.printString(word);
+        do Output.println();
+        let word = WordManager.GetNext();
+        do Output.printString(word);
+        do Output.println();
+        do WordManager.SetSet("GAMES");
+        let word = WordManager.GetNext();
+        do Output.printString(word);
+        do Output.println();
+        let word = WordManager.GetNext();
+        do Output.printString(word);
+        do Output.println();
+        do WordManager.SetSet("ANIME");
+        let word = WordManager.GetNext();
+        do Output.printString(word);
+        do Output.println();
+
+        return;
+    }
+}

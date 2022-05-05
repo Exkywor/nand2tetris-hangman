@@ -1,0 +1,9 @@
+/**
+* Class to run tests from the suite of tests.
+*/
+class Tests {
+    function void RunTests() {
+        do WordManagerTests.Set();
+        return;
+    }
+}

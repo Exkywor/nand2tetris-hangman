@@ -1,0 +1,16 @@
+// A CLI implemented Hangman game.
+// For Project 09 of Nand2Tetris Part 2, by Exkywor.
+//
+// The objective of the game is to guess a hidden word, from a selected set of words,
+// by guessing one letter contained in the word at a time before running out of attempts.
+// The number of attempts will be decided based on the length of the word and the selected difficulty.
+
+/** PUBLIC: Starts running a new game of Hangman. */
+class Main {
+    function void main() {
+        do CLI.PromptForStart();
+        do GameManager.RunGame(true, true);
+        do GameManager.Dispose();
+        return;
+    }
+}
